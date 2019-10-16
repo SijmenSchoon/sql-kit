@@ -39,4 +39,20 @@ final class SQLKitTests: XCTestCase {
         XCTAssertEqual(serializer.sql, "SELECT * FROM planets WHERE name = ?")
         XCTAssert(serializer.binds.first! as! String == "Earth")
     }
+
+    func testTransaction() throws {
+        let db = TestDatabase()
+
+        try db.transaction().run().wait()
+        XCTAssertEqual(db.results[0], "START TRANSACTION")
+
+        try db.transaction().readWrite().run().wait()
+        XCTAssertEqual(db.results[1], "START TRANSACTION READ WRITE")
+
+        try db.transaction().readOnly().run().wait()
+        XCTAssertEqual(db.results[2], "START TRANSACTION READ ONLY")
+
+        try db.commit().run().wait()
+        XCTAssertEqual(db.results[3], "COMMIT")
+    }
 }
