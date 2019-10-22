@@ -43,13 +43,13 @@ final class SQLKitTests: XCTestCase {
     func testTransaction() throws {
         let db = TestDatabase()
 
-        try db.transaction().run().wait()
+        try db.startTransaction().run().wait()
         XCTAssertEqual(db.results[0], "START TRANSACTION")
 
-        try db.transaction().readWrite().run().wait()
+        try db.startTransaction().readWrite().run().wait()
         XCTAssertEqual(db.results[1], "START TRANSACTION READ WRITE")
 
-        try db.transaction().readOnly().run().wait()
+        try db.startTransaction().readOnly().run().wait()
         XCTAssertEqual(db.results[2], "START TRANSACTION READ ONLY")
 
         try db.commit().run().wait()

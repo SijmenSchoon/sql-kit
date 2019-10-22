@@ -23,7 +23,7 @@ public final class SQLStartTransactionBuilder: SQLQueryBuilder {
 }
 
 extension SQLDatabase {
-    public func transaction() -> SQLStartTransactionBuilder {
+    public func startTransaction() -> SQLStartTransactionBuilder {
         return .init(.init(), on: self)
     }
 }
